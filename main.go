@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -27,12 +28,13 @@ var events = allEvents{
 
 func main() {
 	log.Println("Starting API")
+	port := os.Getenv("PORT")
 	router := mux.NewRouter()
 	router.HandleFunc("/", Home)
 	router.HandleFunc("/health-check", HealthCheck).Methods("GET")
 	router.HandleFunc("/events", GetAllEvents).Methods("GET")
 
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":"+port, router)
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
